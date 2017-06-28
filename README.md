@@ -1,5 +1,7 @@
 # tslint-gitstatus
 
+**Please use v5.4.3 or higher version of tslint**
+
 Using **current git status** to find out modfied and added files passing tslint, to prevent lint the whole repository again and again.  This is a nice package to use along with `git precommit`.
 
 ## Install
