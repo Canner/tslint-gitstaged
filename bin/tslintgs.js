@@ -6,13 +6,18 @@ const chalk = require('chalk');
 const TslintGitStatus = require('../lib/index').default;
 
 args
-  .option('tslint', 'tslint.json file path', resolve(process.cwd(), './tslint.json'))
-  .option('git', 'your git directory, where your .git exist', resolve(process.cwd()))
+  .option('tslint', 'tslint.json file path', './tslint.json')
+  .option('git', 'your git directory, where your .git exist', './')
   .option('ext', 'extension names, can use multiple extensions seperate with comma', 'ts,tsx');
 
 const flags = args.parse(process.argv);
 
-new TslintGitStatus(flags.tslint, flags.git, flags.ext.split(',').map(val => `.${val.trim()}`)).start()
+new TslintGitStatus(
+  resolve(process.cwd(), flags.tslint),
+  resolve(process.cwd(), flags.git),
+  flags.ext.split(',').map(val => `.${val.trim()}`)
+)
+  .start()
   .then(() => {
     console.log(chalk.underline.green("tsLint all pass!"));
   })

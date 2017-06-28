@@ -29,10 +29,10 @@ Usage
 
   Options:
 
-    -e, --ext [value]     extension names, can use multiple extensions seperate with comma (defaults to ".ts")
-    -g, --git [value]     your git directory, where your .git exist (defaults to "process.cwd()")
+    -e, --ext [value]     extension names, can use multiple extensions seperate with comma (defaults to "ts,tsx")
+    -g, --git [value]     your git directory, where your .git exist (defaults to "./")
     -h, --help            Output usage information
-    -t, --tslint [value]  tslint.json file path (defaults to "<process.cwd()>/tslint.json")
+    -t, --tslint [value]  tslint.json file path (defaults to "./tslint.json")
     -v, --version         Output the version number
 ```
 
