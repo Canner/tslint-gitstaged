@@ -11,6 +11,7 @@ describe("index", () => {
     rmSync(resolve(__dirname, "file"));
     mkdirSync(resolve(__dirname, "file"));
     writeFileSync(resolve(__dirname, "file/test.ts"), "function test() { console.log('test'); }");
+    writeFileSync(resolve(__dirname, "file/test2.ts"), "function test() { console.log('test'); }");
     new TslintGitStatus(resolve(__dirname, "../tslint.json"), resolve(__dirname, "../"), ".ts").start()
       .then((result) => {
         rmSync(resolve(__dirname, "file"));

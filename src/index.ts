@@ -28,21 +28,21 @@ export default class TslintGitStatus {
         }
 
         const lintCmd = spawn(tsLint, ["-c", tsLintConfig].concat(fileArr));
+        let countError = 0;
 
         lintCmd.stdout.on("data", (data) => {
           // print pretty log
           const result = data.toString().split("\n");
           result.forEach((line, i) => {
-            if (isAbsolute(line)) {
+            if (line.match(/^ERROR:/g)) {
+              countError++;
               log(chalk.underline(line));
-            } else if (line.match(/^\s*\d*\:\d*/g)) {
-              log(chalk.red(line));
-            } else if (line.match(/^✖/g)) {
-              log(chalk.bgRed(line));
             } else {
               log(line);
             }
           });
+
+          log(chalk.bgRed(`Total errors: ${countError}`));
         });
 
         lintCmd.stderr.on("data", (data) => {
@@ -51,7 +51,7 @@ export default class TslintGitStatus {
 
         return new Promise((resolve, reject) => {
           lintCmd.on("close", (code) => {
-            if (code === 1) {
+            if (countError > 0) {
               return reject("Lint fail");
             }
             return resolve(code);
