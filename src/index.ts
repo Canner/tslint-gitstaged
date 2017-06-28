@@ -1,6 +1,6 @@
 import * as chalk from "chalk";
 import {ChildProcess, spawn} from "child_process";
-import {statSync} from "fs";
+import {existsSync, statSync} from "fs";
 import GitStatusFilterFile, {IFileStatus} from "git-status-filter-file-extension";
 import {isAbsolute, resolve} from "path";
 
@@ -28,17 +28,15 @@ export default class TslintGitStatus {
         }
 
         let lintCmd: ChildProcess;
-        try {
-          // try local
+        if (existsSync(tsLint)) { // tslint:disable-line
           lintCmd = spawn(tsLint, ["-c", tsLintConfig].concat(fileArr));
-        } catch (e) {
-          // try global
-          try {
-            lintCmd = spawn("tslint", ["-c", tsLintConfig].concat(fileArr));
-          } catch (e) {
-            return Promise.reject("Can't find tslint");
-          }
+        } else {
+          lintCmd = spawn("tslint", ["-c", tsLintConfig].concat(fileArr));
         }
+
+        lintCmd.on("error", (err) => {
+          return Promise.reject(`Execute tslint failed: ${err}`);
+        });
 
         let countError = 0;
         lintCmd.stdout.on("data", (data) => {
