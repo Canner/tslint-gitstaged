@@ -1,5 +1,5 @@
 import * as chalk from "chalk";
-import {spawn} from "child_process";
+import {ChildProcess, spawn} from "child_process";
 import {statSync} from "fs";
 import GitStatusFilterFile, {IFileStatus} from "git-status-filter-file-extension";
 import {isAbsolute, resolve} from "path";
@@ -27,12 +27,23 @@ export default class TslintGitStatus {
           return Promise.resolve("Nothing to lint");
         }
 
-        const lintCmd = spawn(tsLint, ["-c", tsLintConfig].concat(fileArr));
-        let countError = 0;
+        let lintCmd: ChildProcess;
+        try {
+          // try local
+          lintCmd = spawn(tsLint, ["-c", tsLintConfig].concat(fileArr));
+        } catch (e) {
+          // try global
+          try {
+            lintCmd = spawn("tslint", ["-c", tsLintConfig].concat(fileArr));
+          } catch (e) {
+            return Promise.reject("Can't find tslint");
+          }
+        }
 
+        let countError = 0;
         lintCmd.stdout.on("data", (data) => {
           // print pretty log
-          const result = data.toString().split("\n");
+          const result = data.toString().split("\n").filter((val) => val);
           result.forEach((line, i) => {
             if (line.match(/^ERROR:/g)) {
               countError++;
@@ -42,7 +53,9 @@ export default class TslintGitStatus {
             }
           });
 
-          log(chalk.bgRed(`Total errors: ${countError}`));
+          if (countError > 0) {
+            log(chalk.bgRed(`Total errors: ${countError}`));
+          }
         });
 
         lintCmd.stderr.on("data", (data) => {
