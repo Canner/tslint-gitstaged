@@ -8,7 +8,7 @@ const TslintGitStatus = require('../lib/index').default;
 args
   .option('tslint', 'tslint.json file path', resolve(process.cwd(), './tslint.json'))
   .option('git', 'your git directory, where your .git exist', resolve(process.cwd()))
-  .option('ext', 'extension names, can use multiple extensions seperate with comma', 'ts, tsx');
+  .option('ext', 'extension names, can use multiple extensions seperate with comma', 'ts,tsx');
 
 const flags = args.parse(process.argv);
 
