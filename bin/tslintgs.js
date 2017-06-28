@@ -12,7 +12,7 @@ args
 
 const flags = args.parse(process.argv);
 
-new TslintGitStatus(flags.tslint, flags.git, flags.ext.split(',').map(val => `.${val}`)).start()
+new TslintGitStatus(flags.tslint, flags.git, flags.ext.split(',').map(val => `.${val.trim()}`)).start()
   .then(() => {
     console.log(chalk.underline.green("tsLint all pass!"));
   })
