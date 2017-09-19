@@ -10,16 +10,16 @@ export default class TslintGitStatus {
   constructor(readonly tsLintPath: string, readonly gitDirPath: string, readonly ext: (string | string[]) = "ts") {
   }
 
-  public start(): Promise<string> {
-    const gitStatusFiles = new GitStatusFilterFile(this.gitDirPath, this.ext);
+  public start(): Promise<any> {
+    const gitStatusFiles = new GitStatusFilterFile(this.gitDirPath, {ext: this.ext});
     return gitStatusFiles.start()
       .then((files) => {
         const fileArr: string[] = [];
         const tsLintConfig = resolve(__dirname, this.tsLintPath);
         const tsLint = resolve(__dirname, this.gitDirPath, "./node_modules/.bin/tslint");
         files.forEach((file) => {
-          if (file.isNew || file.isModified) {
-            fileArr.push(resolve(__dirname, this.gitDirPath, file.path()));
+          if (file.status === "A" || file.status === "M" || file.status === "C") {
+            fileArr.push(resolve(__dirname, this.gitDirPath, file.path));
           }
         });
 
@@ -60,12 +60,12 @@ export default class TslintGitStatus {
           console.log(`stderr: ${data.toString()}`);
         });
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolved, reject) => {
           lintCmd.on("close", (code) => {
             if (countError > 0) {
               return reject("Lint fail");
             }
-            return resolve(code);
+            return resolved(code);
           });
         });
       });
