@@ -1,4 +1,4 @@
-# tslint-gitstatus
+# tslint-gitstaged
 
 **Please use v5.4.3 or higher version of tslint**
 
@@ -7,7 +7,7 @@ Using **current git status** to find out modfied and added files passing tslint,
 ## Install
 
 ```
-npm install tslint-gitstatus
+npm install tslint-gitstaged
 ```
 
 ## Command line usage
@@ -15,7 +15,7 @@ npm install tslint-gitstatus
 Install global
 
 ```
-npm i -g tslint-gitstatus
+npm i -g tslint-gitstaged
 ```
 
 Usage
@@ -38,7 +38,7 @@ Usage
 
 ## API
 
-### TslintGitStatus(tslintrcPath, gitPath, extension)
+### TslintGitStaged(tslintrcPath, gitPath, extension)
 
 - tslintrcPath: path to your tslintrc file
 - gitPath: path to your `.git`
@@ -47,8 +47,8 @@ Usage
 ## Usage
 
 ```js
-// TslintGitStatus(<tslint.json path>, <git repository path>, <extension default 'ts'>)
-new TslintGitStatus(resolve(__dirname, "./tslint.json"), resolve(__dirname, "../"), ".ts").start()
+// TslintGitStaged(<tslint.json path>, <git repository path>, <extension default 'ts'>)
+new TslintGitStaged(resolve(__dirname, "./tslint.json"), resolve(__dirname, "../"), ".ts").start()
       .then((result) => {
         // success no lint error, done lint
       })
@@ -59,7 +59,7 @@ new TslintGitStatus(resolve(__dirname, "./tslint.json"), resolve(__dirname, "../
 
 ## Eslint users
 
-- https://github.com/Canner/eslint-gitstatus
+- https://github.com/Canner/eslint-gitstaged
 
 ## License
 

@@ -3,7 +3,7 @@
 const args = require('args');
 const {resolve} = require('path');
 const chalk = require('chalk');
-const TslintGitStatus = require('../lib/index').default;
+const TslintGitStaged = require('../lib/index').default;
 
 args
   .option('tslint', 'tslint.json file path', './tslint.json')
@@ -12,7 +12,7 @@ args
 
 const flags = args.parse(process.argv);
 
-new TslintGitStatus(
+new TslintGitStaged(
   resolve(process.cwd(), flags.tslint),
   resolve(process.cwd(), flags.git),
   flags.ext.split(',').map(val => `.${val.trim()}`)

@@ -1,18 +1,18 @@
 import * as chalk from "chalk";
 import {ChildProcess, spawn} from "child_process";
 import {existsSync, statSync} from "fs";
-import GitStatusFilterFile, {IFileStatus} from "git-status-filter-file-extension";
+import GitStagedFilterFile, {IFileStatus} from "git-staged-filter-file-extension";
 import {isAbsolute, resolve} from "path";
 
 const log = console.log;
 
-export default class TslintGitStatus {
+export default class TslintGitStaged {
   constructor(readonly tsLintPath: string, readonly gitDirPath: string, readonly ext: (string | string[]) = "ts") {
   }
 
   public start(): Promise<any> {
-    const gitStatusFiles = new GitStatusFilterFile(this.gitDirPath, {ext: this.ext});
-    return gitStatusFiles.start()
+    const gitStagedFiles = new GitStagedFilterFile(this.gitDirPath, {ext: this.ext});
+    return gitStagedFiles.start()
       .then((files) => {
         const fileArr: string[] = [];
         const tsLintConfig = resolve(__dirname, this.tsLintPath);
